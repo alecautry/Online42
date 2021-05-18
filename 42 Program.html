@@ -9,111 +9,63 @@ canvas {
 }
 </style>
 </head>
-<body onload="startGame()">
+<body>
 <script>
 
-var myGamePiece;
 
-function startGame() {  //  This function runs all other functions to create the file
-    myGameArea.start();
 
-}
-var myGameArea = {
-  canvas : document.createElement("canvas"),
-  start : function() {
-    this.canvas.width = 1900;
-    this.canvas.height = 900;
-    this.context = this.canvas.getContext("2d");
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-    this.interval = setInterval(updateGameArea, 20);
-    
+
+
+class Domino { //function to create dominos
+  constructor(high, low, id) {
+    this.isTrump = false;
+    this.isDouble = false;
+    this.high = high;
+    this.low = low;
+    this.id = id;
+    this.points = .25;
+
+    if(this.high == this.low){
+      this.isDouble = true;
+    }
+    else{
+      this.isDouble = false;
+    }
+
+    if((this.low + this.high)%5 == 0 ) {  // 
+      this.points = this.low + this.high + .25
+    }
   }
-}
-function Domino(isTrump, isDouble, high, low, id, points) { //function to create dominos
-  this.isTrump = isTrump;
-  this.height = height;
-  this.high = high;
-  this.low = low;
-  this.id = id;
-  this.points = points;
-  this.trumpCheck = function(trump) {
-    if(this.high == trump || this.low == trump) {
+// maybe a getter
+
+
+// Methods
+  setTrump(trump) {  // set trump
+    if(this.high == trump || this.low == trump) { 
         this.isTrump = true;
-    }
+     }
     else {
-      this.isTrump = false;
-    }
+    this.isTrump = false;
+      }
   }
 }
-// Creating Dominos, set the default values isTrump is false for all
-var D0 = new Domino(false, true, 0, 0, 0, .25);
-var D1 = new Domino(false, false, 1, 0, 1, .25);
-var D2 = new Domino(false, false, 2, 0, 2, .25);
-var D3 = new Domino(false, false, 3, 0, 3, .25);
-var D4 = new Domino(false, false, 4, 0, 4, .25);
-var D5 = new Domino(false, false, 5, 0, 5, 5.25);
-var D6 = new Domino(false, false, 6, 0, 6, .25);
-var D7 = new Domino(false, true, 1, 1, 7, .25);
-var D8 = new Domino(false, false, 2, 1, 8, .25);
-var D9 = new Domino(false, false, 3, 1, 9, .25);
-var D10 = new Domino(false, false, 4, 1, 10, 5.25);
-var D11 = new Domino(false, false, 5, 1, 11, .25);
-var D12 = new Domino(false, false, 6, 1, 12, .25);
-var D13 = new Domino(false, true, 2, 2, 13, .25);
-var D14 = new Domino(false, false, 3, 2, 14, 5.25);
-var D15 = new Domino(false, false, 4, 2, 15, .25);
-var D16 = new Domino(false, false, 5, 2, 16, .25);
-var D17 = new Domino(false, false, 6, 2, 17, .25);
-var D18 = new Domino(false, true, 3, 3, 18, .25);
-var D19 = new Domino(false, false, 4, 3, 19, .25);
-var D20 = new Domino(false, false, 5, 3, 20, .25);
-var D21 = new Domino(false, false, 6, 3, 21, .25);
-var D22 = new Domino(false, true, 4, 4, 22, .25);
-var D23 = new Domino(false, false, 5, 4, 23, .25);
-var D24 = new Domino(false, false, 6, 4, 24, 10.25);
-var D25 = new Domino(false, true, 5, 5, 25, 10.25);
-var D26 = new Domino(false, false, 6, 5, 26, .25);
-var D27 = new Domino(false, true, 6, 6, 27, .25);
-var Dominos = [D0, D1, D2, D3, D4, D5, D6,
-          D7, D8, D9, D10, D11, D12, D13, 
-          D14, D15, D16, D17, D18, D19, D20,
-          D21, D22, D23, D24, D25, D26, D27];  //array of all the dominos
+// Creating Dominos
+var IDNumber = 28;
+var k = 0;
+for(var i = 6; i > -1;i--){  // create all dominos with name D(ID) starting at 28 = 6/6, 27 = 6/5, 26 = 6/4 .... 1 = 0/0
 
-var CurrentTrump = 1;
-for (Domino in Dominos){ //set up each domino with the correct isTrump value
-  Domino.trumpCheck(CurrentTrump);
+  for(var j = k + 6; j > -1; j--){
+    eval('var D'+ IDNumber + ' = new Domino(' + i + ',' + j + ',' + IDNumber +');');  // var D28 = new Domino
+    IDNumber--;
+
+  }
+  k--;
+
 }
-let Domino = {  //hash key lookup table for domino ID
-  "6/6": 27,
-  "6/5": 26,
-  "6/4": 25,
-  "6/3": 24,
-  "6/2": 23,
-  "6/1": 22,
-  "6/0": 21,
-  "5/5": 20,
-  "5/4": 19,
-  "5/3": 18,
-  "5/2": 17,
-  "5/1": 16,
-  "5/0": 15,
-  "4/4": 14,
-  "4/3": 13,
-  "4/2": 12,
-  "4/1": 11,
-  "4/0": 10,
-  "3/3": 9,
-  "3/2": 8,
-  "3/1": 7,
-  "3/0": 6,
-  "2/2": 5,
-  "2/1": 4,
-  "2/0": 3,
-  "1/1": 2,
-  "1/0": 1,
-  "0/0": 0,
-}
-document.wirte("Trump check done")
+
+  console.log("Domino ID: " + D28.id);
+
+
 </script>
 <p>Testies</p>
 </body>
