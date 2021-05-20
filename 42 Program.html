@@ -10,19 +10,41 @@ canvas {
 </style>
 </head>
 <body>
+  
+  <h2>Come play 42!</h2>
+  <body onload="startGame()"></body>
+  <p>Your dominos.</p>
+  <p id ="demo"></p>
 <script>
+// print the id above^^^^
+document.getElementById("demo").innerHTML = "6/6";
 
+function startGame(){  // some sort of start function to intialize things. Not sure if I am going to use
+  myGameArea.start();
+}
 
-
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 1000;
+        this.canvas.height = 400;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(updateGameArea, 20);
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
 
 
 class Domino { //function to create dominos
-  constructor(high, low, id) {
+  constructor(high, low, ID) {
     this.isTrump = false;
     this.isDouble = false;
     this.high = high;
     this.low = low;
-    this.id = id;
+    this.ID = ID;
     this.points = .25;
 
     if(this.high == this.low){
@@ -32,7 +54,7 @@ class Domino { //function to create dominos
       this.isDouble = false;
     }
 
-    if((this.low + this.high)%5 == 0 ) {  // 
+    if((this.low + this.high)%5 == 0 ) {  // use mod 5 to see if a multiple of 5 and thus count.
       this.points = this.low + this.high + .25
     }
   }
@@ -63,10 +85,26 @@ for(var i = 6; i > -1;i--){  // create all dominos with name D(ID) starting at 2
 
 }
 
-  console.log("Domino ID: " + D28.id);
+  console.log("Domino ID: " + D28.ID);
+  let d1 = document.createElement("button");
+  d1.innerHTML = "D1";
+  d1.onclick = function () {
+    alert("Button is clicked");
+  };
 
+  let d2 = document.createElement("button");
+  d2.innerHTML = "D2";
+  d2.onclick = function () {
+    alert("Button is clicked");
+  };
+document.body.appendChild(d1);
+document.body.appendChild(d2);
 
 </script>
-<p>Testies</p>
+<p>You can do this.</p>
+<div class="box">
+  <div><strong>Log:</strong></div>
+  <div class="log"></div>
+</div>
 </body>
 </html> 
